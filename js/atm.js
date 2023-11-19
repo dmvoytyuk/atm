@@ -75,10 +75,10 @@ function checkUserAction(action) {
 }
 
 function isWithdrawable(atmCash, cash) {
-  let restToCash = cash % 50;
+  let restToDispense = cash % 50;
 
   if (
-    (cash % 20 === 0 || cash % 50 === 0 || restToCash % 20 === 0) &&
+    (cash % 20 === 0 || cash % 50 === 0 || restToDispense % 20 === 0) &&
     cash <= atmCash
   ) {
     return true;
@@ -88,6 +88,11 @@ function isWithdrawable(atmCash, cash) {
 
 function getQtOfFifty(cash, qtOfFiftyAvailable, qtOfTwenty = 0) {
   let rest = cash - qtOfTwenty * 20;
+
+  if (rest % 50 !== 0 && (rest % 50) % 20 !== 0 && rest > 50) {
+    rest = rest - 60;
+  }
+
   let qtOfFifty = Math.floor(rest / 50);
   if (qtOfFifty > qtOfFiftyAvailable) {
     return qtOfFiftyAvailable;
